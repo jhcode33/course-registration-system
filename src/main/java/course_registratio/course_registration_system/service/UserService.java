@@ -1,5 +1,6 @@
 package course_registratio.course_registration_system.service;
 
+import course_registratio.course_registration_system.domain.UserResponseDomain;
 import course_registratio.course_registration_system.domain.UserSignUpDomain;
 import course_registratio.course_registration_system.domain.UserUpdateDomain;
 import course_registratio.course_registration_system.entity.User;
@@ -47,5 +48,10 @@ public class UserService {
 
         findUser.update(userUpdateDomain);
         return findUser.getUserId();
+    }
+
+    public UserResponseDomain findById(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Failed: User Not Found"));
+        return new UserResponseDomain(user);
     }
 }
