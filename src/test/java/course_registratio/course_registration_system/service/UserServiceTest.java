@@ -73,7 +73,7 @@ public class UserServiceTest {
         for (int i = 0; i < signUpUsers.size(); i++){
             User user = userRepository.findById(
                     successUserIdList.get(i)).orElseThrow(
-                            () -> new RuntimeException(("User not found")));
+                            () -> new RuntimeException(("Failed: User not found")));
 
             checkSameData(signUpUsers.get(i).toEntity(), user);
         }
@@ -102,23 +102,20 @@ public class UserServiceTest {
 
             // then
             User findUpdateUser = userRepository.findById(userUpdateId).orElseThrow(
-                    () -> new IllegalArgumentException("Fail: User Not Found"));
+                    () -> new IllegalArgumentException("Failed: User Not Found"));
 
             checkSameData(user.updateToEntity(findUpdateUser), findUpdateUser);
         }
     }
 
     @Test
-    public void join_duplicate_loginId() {
+    public void join_password_mismatch() {
         // Given
-        UserSignUpDomain user1 = signUpUsers.get(0);
-
-        UserSignUpDomain user2 = signUpUsers.get(1);
-        user2.setLoginId(user1.getLoginId());
+        UserSignUpDomain user = signUpUsers.get(0);
+        user.setPasswordConfirm("mismatch");
 
         // When, Then
-        userService.join(user1);
-        assertThrows(IllegalArgumentException.class, () -> userService.join(user2),
-                "Failed: Already Exist ID!");
+        assertThrows(IllegalArgumentException.class, () -> userService.join(user),
+                "Failed: Please Check Password!");
     }
 }
