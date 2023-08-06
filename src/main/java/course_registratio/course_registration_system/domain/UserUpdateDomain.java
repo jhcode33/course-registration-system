@@ -1,41 +1,33 @@
 package course_registratio.course_registration_system.domain;
 
-import course_registratio.course_registration_system.entity.Role;
 import course_registratio.course_registration_system.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class UserSignUpDomain {
+@Builder
+public class UserUpdateDomain {
 
-    private String username;
     private String loginId;
+    private String username;
     private String password;
     private String passwordConfirm;
-
     private String email;
     private String phoneNumber;
 
-    public User toEntity(){
+    public User updateToEntity(User user){
         return User.builder()
+                .userId(user.getUserId())
+                .loginId(user.getLoginId())
+                .role(user.getRole())
                 .username(this.username)
-                .loginId(this.loginId)
                 .password(this.password)
                 .email(this.email)
                 .phoneNumber(this.phoneNumber)
-                .role(Role.STUDENT)
                 .build();
-    }
-
-    @Builder
-    public UserSignUpDomain(String username, String loginId, String password, String passwordConfirm, String email, String phoneNumber) {
-        this.username = username;
-        this.loginId = loginId;
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 }

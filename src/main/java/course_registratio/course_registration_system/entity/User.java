@@ -1,5 +1,6 @@
 package course_registratio.course_registration_system.entity;
 
+import course_registratio.course_registration_system.domain.UserUpdateDomain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -21,13 +22,13 @@ public class User extends BaseTimeEntity{
     private String loginId;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private String username;
 
     @Column
     private String phoneNumber;
@@ -35,4 +36,11 @@ public class User extends BaseTimeEntity{
     @Column
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void update(UserUpdateDomain userUpdateDomain){
+        this.username = userUpdateDomain.getUsername();
+        this.password = userUpdateDomain.getPassword();
+        this.email = userUpdateDomain.getEmail();
+        this.phoneNumber = userUpdateDomain.getPhoneNumber();
+    }
 }

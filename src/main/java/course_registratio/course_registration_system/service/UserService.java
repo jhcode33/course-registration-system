@@ -1,6 +1,7 @@
 package course_registratio.course_registration_system.service;
 
 import course_registratio.course_registration_system.domain.UserSignUpDomain;
+import course_registratio.course_registration_system.domain.UserUpdateDomain;
 import course_registratio.course_registration_system.entity.User;
 import course_registratio.course_registration_system.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public Long join(UserSignUpDomain userSignUpDomain){
         userRepository.findByLoginId(userSignUpDomain.getLoginId())
                 .ifPresent(user -> {
@@ -27,5 +29,23 @@ public class UserService {
         // Domain -> Entity 변환
         User user = userSignUpDomain.toEntity();
         return userRepository.saveAndFlush(user).getUserId();
+    }
+
+    @Transactional
+    public Long update(UserUpdateDomain userUpdateDomain){
+        User findUser = userRepository.findByLoginId(userUpdateDomain.getLoginId()).orElseThrow(
+                () -> new IllegalArgumentException("Failed: No User Info")
+        );
+
+        if (userUpdateDomain.getUsername() == null){
+            userUpdateDomain.setUsername(findUser.getUsername());
+        } else if (userUpdateDomain.getPassword() == null){
+            userUpdateDomain.setPassword(findUser.getPassword());
+        } else if (userUpdateDomain.getEmail() == null){
+            userUpdateDomain.setEmail(findUser.getEmail());
+        }
+
+        findUser.update(userUpdateDomain);
+        return findUser.getUserId();
     }
 }
