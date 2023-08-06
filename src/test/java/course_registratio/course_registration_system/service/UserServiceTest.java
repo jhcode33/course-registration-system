@@ -107,4 +107,18 @@ public class UserServiceTest {
             checkSameData(user.updateToEntity(findUpdateUser), findUpdateUser);
         }
     }
+
+    @Test
+    public void join_duplicate_loginId() {
+        // Given
+        UserSignUpDomain user1 = signUpUsers.get(0);
+
+        UserSignUpDomain user2 = signUpUsers.get(1);
+        user2.setLoginId(user1.getLoginId());
+
+        // When, Then
+        userService.join(user1);
+        assertThrows(IllegalArgumentException.class, () -> userService.join(user2),
+                "Failed: Already Exist ID!");
+    }
 }
