@@ -1,11 +1,11 @@
 package course_registratio.course_registration_system.repository;
 
-import course_registratio.course_registration_system.entity.UserEntity;
+import course_registratio.course_registration_system.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<UserEntity> findByLoginId(String loginId);
+    Optional<User> findByLoginId(String loginId);
 }

@@ -1,7 +1,7 @@
 package course_registratio.course_registration_system.service;
 
 import course_registratio.course_registration_system.domain.UserSignUpDomain;
-import course_registratio.course_registration_system.entity.UserEntity;
+import course_registratio.course_registration_system.entity.User;
 import course_registratio.course_registration_system.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class UserService {
 
     public Long join(UserSignUpDomain userSignUpDomain){
         userRepository.findByLoginId(userSignUpDomain.getLoginId())
-                .ifPresent(userEntity -> {
+                .ifPresent(user -> {
                     throw new IllegalArgumentException("Failed: Already Exist ID!");
                 });
 
@@ -24,7 +24,8 @@ public class UserService {
             throw new IllegalArgumentException("Failed: Please Check Password!");
         }
 
-        UserEntity userEntity = userSignUpDomain.toEntity();
-        return userRepository.save(userEntity).getUserId();
+        // Domain -> Entity 변환
+        User user = userSignUpDomain.toEntity();
+        return userRepository.saveAndFlush(user).getUserId();
     }
 }

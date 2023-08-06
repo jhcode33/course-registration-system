@@ -1,6 +1,7 @@
 package course_registratio.course_registration_system.domain;
 
-import course_registratio.course_registration_system.entity.UserEntity;
+import course_registratio.course_registration_system.entity.Role;
+import course_registratio.course_registration_system.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,14 @@ public class UserSignUpDomain {
     private String email;
     private String phoneNumber;
 
-    public UserEntity toEntity(){
-        return UserEntity.builder()
+    public User toEntity(){
+        return User.builder()
                 .username(this.username)
                 .loginId(this.loginId)
                 .password(this.password)
                 .email(this.email)
-                .phone_number(this.phoneNumber)
+                .phoneNumber(this.phoneNumber)
+                .role(Role.STUDENT)
                 .build();
     }
 
